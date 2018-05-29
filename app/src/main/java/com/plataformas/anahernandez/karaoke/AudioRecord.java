@@ -2,7 +2,6 @@ package com.plataformas.anahernandez.karaoke;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,7 +10,6 @@ import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,21 +17,14 @@ import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 
@@ -48,8 +39,6 @@ public class AudioRecord extends AppCompatActivity {
     private static String filename = null;
     boolean mStartPlaying = true;
     boolean mStartRecording = true;
-    private StorageTask mUploadTask;
-    private Uri uri;
 
 
     private Button mRecordButton = null;
@@ -57,8 +46,7 @@ public class AudioRecord extends AppCompatActivity {
     private Button   mPlayButton = null;
     private MediaPlayer   mPlayer = null;
     private Button mUploadButton = null;
-    private DatabaseReference storage = null;
-    private StorageReference mStorageRef = null;
+    private StorageReference storage = null;
     private ProgressDialog progress = null;
     private Button allrecordings  = null;
 
@@ -137,13 +125,14 @@ public class AudioRecord extends AppCompatActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.activity_audio_record);
-        mStorageRef = FirebaseStorage.getInstance().getReference("Recordings");
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
 
         // Record to the external cache directory for visibility
 
+        String filename = ((EditText)findViewById(R.id.recordName)).getText().toString();
         mFileName =  getExternalCacheDir().getAbsolutePath();
+        mFileName += "/"+filename+".3gp";
 
         mRecordButton = findViewById(R.id.recordButton);
         mPlayButton = findViewById(R.id.playButton);
@@ -174,7 +163,7 @@ public class AudioRecord extends AppCompatActivity {
         });
 
         //firebase initiation
-        storage = FirebaseDatabase.getInstance().getReference();
+        storage = FirebaseStorage.getInstance().getReference();
         //for progress message
         progress = new ProgressDialog(this);
 
@@ -215,37 +204,9 @@ public class AudioRecord extends AppCompatActivity {
     {
         progress.setMessage("Subiendo a nube....");
         progress.show();
-        mStorageRef = FirebaseStorage.getInstance().getReference("Recordings");
-
         filename = ((EditText)findViewById(R.id.recordName)).getText().toString();
-        mFileName += "/"+filename+".3gp";
-      //  storage.child("Recordings").child(filename+".3gp");
-
-
-        uri = Uri.fromFile(new File(filename));
-
-
-        StorageReference fileReference = mStorageRef.child(filename
-                + "." + getFileExtension(uri));
-        mUploadTask = fileReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(AudioRecord.this, "Upload successful", Toast.LENGTH_LONG).show();
-                storage.child("Recordings").child(filename).setValue(uri);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                progress.dismiss();
-                Toast.makeText(AudioRecord.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-            }
-        });
-        /**
+        StorageReference filepath = storage.child("Recordings").child(filename+".3gp");
+        Uri uri = Uri.fromFile(new File(mFileName));
         filepath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -262,11 +223,6 @@ public class AudioRecord extends AppCompatActivity {
                 }
                 progress.dismiss();
             }
-        });**/
-    }
-    private String getFileExtension(Uri uri){
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return mime.getExtensionFromMimeType(cR.getType(uri));
+        });
     }
 }
