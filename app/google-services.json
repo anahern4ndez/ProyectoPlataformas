@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "1058629442243",
+    "firebase_url": "https://proyectoplataformas-5c736.firebaseio.com",
+    "project_id": "proyectoplataformas-5c736",
+    "storage_bucket": "proyectoplataformas-5c736.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058629442243:android:ad1cb32426e001c6",
+        "android_client_info": {
+          "package_name": "com.plataformas.anahernandez.karaoke"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1058629442243-encp6m0dd6te6cfcg9tcog2vp7lki0ov.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.plataformas.anahernandez.karaoke",
+            "certificate_hash": "afdb29c65bd2e3cb51a898956f221edc1fb0b3cd"
+          }
+        },
+        {
+          "client_id": "1058629442243-mimad395euqq4vca7cvghrjfrqd6oiut.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1058629442243-mimad395euqq4vca7cvghrjfrqd6oiut.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJOBE7LfFGLwyNw1_1Uedtyzb7oNlQwEE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1058629442243-mimad395euqq4vca7cvghrjfrqd6oiut.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
