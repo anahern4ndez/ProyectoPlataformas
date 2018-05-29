@@ -20,12 +20,6 @@ import android.widget.MediaController;
  * status bar and navigation/system bar) with user interaction.
  */
 public class VideoDisplay extends AppCompatActivity {
-    private Button btnstop, btnplay;
-    private VideoView vv;
-    private MediaController mediacontroller;
-    private Uri uri;
-    private boolean isContinuously = true;
-    private ProgressBar progressBar;
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
